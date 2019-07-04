@@ -11,7 +11,7 @@ class Weekday
     /** @var int */
     private $value;
 
-    private function __construct(int $value)
+    public function __construct(int $value)
     {
         if ($value < 1 || $value > 7) {
             throw new InvalidArgumentException('Weekday value must be positive number between 1 and 7.');
@@ -41,6 +41,11 @@ class Weekday
         } while ($dateTime->format('N') !== $this->value);
 
         return $dateTime;
+    }
+
+    public function toInt(): int
+    {
+        return $this->value;
     }
 
     public function equalsTo(Weekday $weekday): bool
