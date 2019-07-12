@@ -3,17 +3,17 @@
 namespace LuKun\Time;
 
 use DateInterval;
-use DateTimeImmutable;
 use RuntimeException;
+use DateTimeImmutable;
 
 class Date
 {
     /** @var DateTimeImmutable */
     private $dateTime;
 
-    public function __construct(DateTimeImmutable $dateTime)
+    public function __construct(Day $day, Month $month, Year $year)
     {
-        $this->dateTime = $dateTime->setTime(0, 0, 0, 0);
+        $this->dateTime = new DateTimeImmutable("{$year->toInt()}-{$month->toInt()}-{$day->toInt()} 00:00:00.0");
     }
 
     public function getDay(): Day
@@ -74,13 +74,8 @@ class Date
         return $this->dateTime == $date->dateTime;
     }
 
-    public function toDateTime(Time $time): DateTimeImmutable
+    public function toDateTime(): DateTimeImmutable
     {
-        return $this->dateTime->setTime(
-            $time->getHour()->toInt(),
-            $time->getMinute()->toInt(),
-            $time->getSecond()->toInt(),
-            $time->getMicrosecond()->toInt()
-        );
+        return $this->dateTime;
     }
 }

@@ -10,9 +10,9 @@ class Time
     /** @var DateTimeImmutable */
     private $dateTime;
 
-    public function __construct(DateTimeImmutable $dateTime)
+    public function __construct(Hour $hour, Minute $minute, Second $second, Microsecond $microsecond)
     {
-        $this->dateTime = $dateTime->setDate(1970, 1, 1);
+        $this->dateTime = new DateTimeImmutable("1970-01-01 {$hour->toInt()}:{$minute->toInt()}:{$second->toInt()}.{$microsecond->toInt()}");
     }
 
     public function getHour(): Hour
@@ -50,12 +50,8 @@ class Time
         return $this->dateTime == $time->dateTime;
     }
 
-    public function toDateTime(Date $date): DateTimeImmutable
+    public function toDateTime(): DateTimeImmutable
     {
-        return $this->dateTime->setDate(
-            $date->getYear()->toInt(),
-            $date->getMonth()->toInt(),
-            $date->getDay()->toInt()
-        );
+        return $this->dateTime;
     }
 }
