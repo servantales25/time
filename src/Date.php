@@ -3,8 +3,8 @@
 namespace LuKun\Time;
 
 use DateInterval;
-use RuntimeException;
 use DateTimeImmutable;
+use RuntimeException;
 
 class Date
 {
@@ -64,6 +64,20 @@ class Date
         return $this->dateTime->diff($date->dateTime, true);
     }
 
+    public function add(DateInterval $dateInterval): Date
+    {
+        $dateTime = $this->dateTime->add($dateInterval);
+
+        return self::fromDateTime($dateTime);
+    }
+
+    public function sub(DateInterval $dateInterval): Date
+    {
+        $dateTime = $this->dateTime->sub($dateInterval);
+
+        return self::fromDateTime($dateTime);
+    }
+
     public function compareTo(Date $date): int
     {
         return $this->dateTime <=> $date->dateTime;
@@ -74,8 +88,36 @@ class Date
         return $this->dateTime == $date->dateTime;
     }
 
-    public function toDateTime(): DateTimeImmutable
+    public function toDateTime(?Time $time = null): DateTimeImmutable
     {
-        return $this->dateTime;
+        $dateTime = $this->dateTime;
+        if ($time !== null) {
+            $hour = $time->getHour()->toInt();
+            $minute = $time->getMinute()->toInt();
+            $second = $time->getSecond()->toInt();
+            $microsecond = $time->getMicrosecond()->toInt();
+
+            $dateTime = $dateTime->setTime($hour, $minute, $second, $microsecond);
+        }
+
+        return $dateTime;
+    }
+
+    public static function create(int $day, int $month, int $year): Date
+    {
+        return new Date(
+            new Day($day),
+            new Month($month),
+            new Year($year)
+        );
+    }
+
+    public static function fromDateTime(DateTimeImmutable $dateTime): Date
+    {
+        return self::create(
+            $dateTime->format('d'),
+            $dateTime->format('m'),
+            $dateTime->format('Y')
+        );
     }
 }
