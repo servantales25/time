@@ -23,6 +23,11 @@ class WeekType
         return $this->value === $weekType->value;
     }
 
+    public function toInt(): int
+    {
+        return $this->value;
+    }
+
     public static function getOdd(): WeekType
     {
         return new WeekType(1);

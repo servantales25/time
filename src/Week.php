@@ -23,6 +23,16 @@ class Week
         return ($this->value % 2 === 0) ? WeekType::getEven() : WeekType::getOdd();
     }
 
+    public function compareTo(Week $week): int
+    {
+        return $this->value <=> $week->value;
+    }
+
+    public function equalsTo(Week $week): bool
+    {
+        return $this->value === $week->value;
+    }
+
     public function toInt(): int
     {
         return $this->value;

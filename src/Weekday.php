@@ -25,32 +25,19 @@ class Weekday
         return $this->value === 6 || $this->value === 7;
     }
 
-    public function getNextClosestFrom(DateTimeImmutable $dateTime): DateTimeImmutable
+    public function compareTo(Weekday $weekday): int
     {
-        do {
-            $dateTime = $dateTime->add(new DateInterval('P1D'));
-        } while ($dateTime->format('N') !== $this->value);
-
-        return $dateTime;
-    }
-
-    public function getPreviousClosestFrom(DateTimeImmutable $dateTime): DateTimeImmutable
-    {
-        do {
-            $dateTime = $dateTime->sub(new DateInterval('P1D'));
-        } while ($dateTime->format('N') !== $this->value);
-
-        return $dateTime;
-    }
-
-    public function toInt(): int
-    {
-        return $this->value;
+        return $this->value <=> $weekday->value;
     }
 
     public function equalsTo(Weekday $weekday): bool
     {
         return $this->value === $weekday->value;
+    }
+
+    public function toInt(): int
+    {
+        return $this->value;
     }
 
     public static function getMonday(): Weekday
